@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/assets/Lora-VariableFont_wght-B2ootaw-.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/assets/PTSans-Regular-CxL0S8W7.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/assets/PTSans-Bold-D9fedIX3.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/assets/FiraMono-Regular-BTCkDNvf.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/assets/FiraMono-Medium-DU3aDxX5.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/assets/FiraMono-Bold-CLVRCuM9.ttf" as="font" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/apple-touch-icon.png" />
+    <link rel="manifest" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        var scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          var element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          var hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          var newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((entries) => {
+          setHeight();
+        });
+        resizeObserver.observe(obj.contentWindow.document.body);
+      }
+    </script>
+    <marimo-filename hidden>main.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>main</title>
+    <script type="module" crossorigin crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/assets/index-txb0mb7R.js"></script>
+    <link rel="stylesheet" crossorigin crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.14.10/dist/assets/index-B-hr6ABS.css">
+  
+<script data-marimo="true">
+    window.__MARIMO_STATIC__ = {};
+    window.__MARIMO_STATIC__.files = {};
+</script>
+<style>
+/* Watermark and protection styles */
+
+/* Watermark overlay */
+.watermark-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 100px,
+            rgba(0, 0, 0, 0.02) 100px,
+            rgba(0, 0, 0, 0.02) 200px
+        );
+}
+
+.watermark-overlay::before {
+    content: '© 2025 Simulateur Freelance - Tous droits réservés';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 48px;
+    color: rgba(0, 0, 0, 0.03);
+    font-weight: bold;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Disable text selection */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Allow selection only for input elements */
+input, textarea, select {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Disable highlighting */
+::selection {
+    background: transparent;
+}
+
+::-moz-selection {
+    background: transparent;
+}
+
+/* Disable drag and drop */
+* {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
+/* Disable image context menu */
+img {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    -webkit-touch-callout: none;
+}
+
+/* Hide print styles */
+@media print {
+    * {
+        display: none !important;
+    }
+    
+    body::before {
+        content: 'Impression non autorisée - © 2025 Simulateur Freelance';
+        display: block !important;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        color: red;
+        font-weight: bold;
+    }
+}
+
+/* Protection notice */
+.protection-notice {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 10000;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Blur sensitive content when DevTools detected */
+.devtools-detected {
+    filter: blur(10px);
+    pointer-events: none;
+}
+
+/* Anti-screenshot protection */
+.anti-screenshot {
+    position: relative;
+    overflow: hidden;
+}
+
+.anti-screenshot::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.01) 2px,
+            rgba(255, 255, 255, 0.01) 4px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.01) 2px,
+            rgba(255, 255, 255, 0.01) 4px
+        );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Disable outline on focus for security */
+* {
+    outline: none !important;
+}
+
+/* Hide scrollbars to prevent easy navigation */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+/* Disable text cursor in non-input elements */
+body, div, span, p, h1, h2, h3, h4, h5, h6 {
+    cursor: default !important;
+}
+</style>
+<style>
+/* Watermark and protection styles */
+
+/* Watermark overlay */
+.watermark-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 100px,
+            rgba(0, 0, 0, 0.02) 100px,
+            rgba(0, 0, 0, 0.02) 200px
+        );
+}
+
+.watermark-overlay::before {
+    content: '© 2025 Simulateur Freelance - Tous droits réservés';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 48px;
+    color: rgba(0, 0, 0, 0.03);
+    font-weight: bold;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Disable text selection */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Allow selection only for input elements */
+input, textarea, select {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Disable highlighting */
+::selection {
+    background: transparent;
+}
+
+::-moz-selection {
+    background: transparent;
+}
+
+/* Disable drag and drop */
+* {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
+/* Disable image context menu */
+img {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    -webkit-touch-callout: none;
+}
+
+/* Hide print styles */
+@media print {
+    * {
+        display: none !important;
+    }
+    
+    body::before {
+        content: 'Impression non autorisée - © 2025 Simulateur Freelance';
+        display: block !important;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        color: red;
+        font-weight: bold;
+    }
+}
+
+/* Protection notice */
+.protection-notice {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 10000;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Blur sensitive content when DevTools detected */
+.devtools-detected {
+    filter: blur(10px);
+    pointer-events: none;
+}
+
+/* Anti-screenshot protection */
+.anti-screenshot {
+    position: relative;
+    overflow: hidden;
+}
+
+.anti-screenshot::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.01) 2px,
+            rgba(255, 255, 255, 0.01) 4px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.01) 2px,
+            rgba(255, 255, 255, 0.01) 4px
+        );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Disable outline on focus for security */
+* {
+    outline: none !important;
+}
+
+/* Hide scrollbars to prevent easy navigation */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+/* Disable text cursor in non-input elements */
+body, div, span, p, h1, h2, h3, h4, h5, h6 {
+    cursor: default !important;
+}
+</style>
+</head>
+  <body>
+<!-- Content from main.html -->
+
+    <div id="root"></div>
+    <script data-marimo="true">
+      window.__MARIMO_MOUNT_CONFIG__ = {
+            "filename": "main.py",
+            "mode": "read",
+            "version": "0.14.10",
+            "serverToken": "static",
+            "config": {"completion": {"activate_on_typing": true, "copilot": false}, "display": {"cell_output": "above", "code_editor_font_size": 14, "dataframes": "rich", "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": false, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": true}}, "package_management": {"manager": "pip"}, "runtime": {"auto_instantiate": true, "auto_reload": "off", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "after_delay", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": true},
+            "notebook": {"cells": [{"code": "", "code_hash": "a08426b177aaef968d9eb356e356e8d6", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "Hbol", "name": ""}, {"code": "", "code_hash": "b50b6b6669b23b1284596f7c57e8a58d", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "MJUe", "name": ""}, {"code": "", "code_hash": "53a67157dfa6b37c3982354b2a2e0df3", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "vblA", "name": ""}, {"code": "", "code_hash": "383849c71b446a47ef013c8145ff3e9d", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "bkHC", "name": ""}, {"code": "", "code_hash": "df0460021a83a67d6fc8550ff7c759dd", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "lEQa", "name": ""}, {"code": "", "code_hash": "6e93cda80b54b655ffcc73ebfd7b039c", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "PKri", "name": ""}, {"code": "", "code_hash": "dee15ed2ba47097432ab55ec91fef9eb", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "Xref", "name": ""}, {"code": "", "code_hash": "4ccdee3752b7d9c656f6353d05a03842", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "SFPL", "name": ""}, {"code": "", "code_hash": "5c7a138c93fba666b9f5b3c76438a65e", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "BYtC", "name": ""}, {"code": "", "code_hash": "9201d58ba914ad984b1262d25e84bb1e", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "RGSE", "name": ""}, {"code": "", "code_hash": "adf934c4daa27b1959288425242732ea", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "Kclp", "name": ""}, {"code": "", "code_hash": "5b1494167d48efa512a81c8acfc052f9", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "emfo", "name": ""}, {"code": "", "code_hash": "5373713040f4e703cd9c7dee3b32759c", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "Hstk", "name": ""}, {"code": "", "code_hash": "68aac917201fba8c9a3902b40472e3fa", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "nWHF", "name": ""}, {"code": "", "code_hash": "ed030199c5377608eef5b9361a348c18", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "iLit", "name": ""}, {"code": "", "code_hash": "2cfb1a507b375539df0a79e1afbd20fe", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "ZHCJ", "name": ""}, {"code": "", "code_hash": "35d0985bf674b78768159c7ec35bbcc6", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "ROlb", "name": ""}, {"code": "", "code_hash": "b3e9fb0aebbe5122b89e726153cefc11", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "qnkX", "name": ""}, {"code": "", "code_hash": "d05347d215d7cf87153d5f7b818c3561", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "TqIu", "name": ""}, {"code": "", "code_hash": "28186b3b0a1cff7d62abeb1e143d0a75", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "Vxnm", "name": ""}, {"code": "", "code_hash": "51654bc31634df531252ed41bde66603", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "DnEU", "name": ""}, {"code": "", "code_hash": "1c3efd8c9b5fe180a3db6d3f5a563ca2", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "ulZA", "name": ""}, {"code": "", "code_hash": "69164b1f921bfdf850d140eb7d01cfab", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "ecfG", "name": ""}, {"code": "", "code_hash": "63f1ed96708a46dc913d00583db931ad", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "Pvdt", "name": ""}, {"code": "", "code_hash": "c077f954bb7fe444df82a6bbe16bad2a", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "ZBYS", "name": ""}, {"code": "", "code_hash": "a4d84a1c2abe96230130d9b1718ed930", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "aLJB", "name": ""}, {"code": "", "code_hash": "35b87667b3962719c31337cb010e2ef3", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "nHfw", "name": ""}, {"code": "", "code_hash": "a2e32787980a6b94ed882e9016369d7e", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "xXTn", "name": ""}, {"code": "", "code_hash": "e1b9b47d2f774faed2e9f5f8af49c2ed", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "AjVT", "name": ""}, {"code": "", "code_hash": "15a7c060b696698bbf444c7d89b0359b", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "pHFh", "name": ""}, {"code": "", "code_hash": "6b6cec2dfd7e02513c5302afe6c4a465", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "NCOB", "name": ""}], "metadata": {"marimo_version": "0.14.10"}, "version": "1"},
+            "session": {"cells": [{"code_hash": "a08426b177aaef968d9eb356e356e8d6", "console": [], "id": "Hbol", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "b50b6b6669b23b1284596f7c57e8a58d", "console": [], "id": "MJUe", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "53a67157dfa6b37c3982354b2a2e0df3", "console": [], "id": "vblA", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h1 id=\"simulateur-de-revenus-freelance-auto-entrepreneur-2025\">\ud83d\udcbc Simulateur de Revenus Freelance Auto-Entrepreneur 2025</h1>\n<span class=\"paragraph\"><strong>Calculez vos revenus nets, charges et optimisations fiscales</strong></span>\n<span class=\"paragraph\">Comparez 3 r\u00e9gimes fiscaux pour optimiser vos revenus :<br />\n- <strong>R\u00e9gime Classique</strong> : Imp\u00f4t progressif standard<br />\n- <strong>Classique + ACRE</strong> : Avec r\u00e9duction charges sociales premi\u00e8re ann\u00e9e<br />\n- <strong>R\u00e9gime VFL</strong> : Versement Forfaitaire Lib\u00e9ratoire (si \u00e9ligible)  </span>\n<span class=\"paragraph\"><em>Compatible avec tous les statuts : BIC, BNC, activit\u00e9s mixtes</em></span></span>"}, "type": "data"}]}, {"code_hash": "383849c71b446a47ef013c8145ff3e9d", "console": [], "id": "bkHC", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h2 id=\"configuration-de-votre-activite\">\ud83c\udfaf Configuration de votre Activit\u00e9</h2></span>"}, "type": "data"}]}, {"code_hash": "df0460021a83a67d6fc8550ff7c759dd", "console": [], "id": "lEQa", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='lEQa-0' random-id='81b2db67-fb40-c62b-c308-cda15a2485aa'><marimo-dropdown data-initial-value='[]' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Type d&#x27;activit&#92;u00e9&lt;/span&gt;&lt;/span&gt;&quot;' data-options='[&quot;BIC - Vente de marchandises&quot;, &quot;BIC - Services commerciaux/artisanaux&quot;, &quot;BNC - Professions lib&#92;u00e9rales&quot;, &quot;BNC - Professions lib&#92;u00e9rales CIPAV&quot;]' data-allow-select-none='true' data-searchable='false' data-full-width='false'></marimo-dropdown></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "6e93cda80b54b655ffcc73ebfd7b039c", "console": [], "id": "PKri", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h3 id=\"configuration-tjm-et-jours-travailles\">\ud83d\udcca Configuration TJM et Jours Travaill\u00e9s</h3></span>"}, "type": "data"}]}, {"code_hash": "dee15ed2ba47097432ab55ec91fef9eb", "console": [], "id": "Xref", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='Xref-0' random-id='688caab2-fda2-f619-2a49-4b4bbec9b3fc'><marimo-slider data-initial-value='500' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Taux Journalier Moyen - TJM (&#92;u20ac)&lt;/span&gt;&lt;/span&gt;&quot;' data-start='200' data-stop='1500' data-step='25' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "4ccdee3752b7d9c656f6353d05a03842", "console": [], "id": "SFPL", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='SFPL-0' random-id='e1878ca3-1dd8-814b-746a-2343f7037064'><marimo-slider data-initial-value='200' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Nombre de jours travaill&#92;u00e9s par an&lt;/span&gt;&lt;/span&gt;&quot;' data-start='100' data-stop='250' data-step='5' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "5c7a138c93fba666b9f5b3c76438a65e", "console": [], "id": "BYtC", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h3 id=\"resultats-de-votre-configuration\">\ud83d\udcca R\u00e9sultats de votre Configuration</h3>\n<span class=\"paragraph\"><strong>TJM :</strong> 500\u20ac<br />\n<strong>Jours travaill\u00e9s :</strong> 200j/an<br />\n<strong>Cong\u00e9s :</strong> 50j/an<br />\n<strong>Taux d'activit\u00e9 :</strong> 80.0%  </span>\n<span class=\"paragraph\"><strong>CA annuel :</strong> 100,000\u20ac<br />\n<strong>CA mensuel moyen :</strong> 8,333\u20ac</span></span>"}, "type": "data"}]}, {"code_hash": "9201d58ba914ad984b1262d25e84bb1e", "console": [], "id": "RGSE", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h3 id=\"analyse-du-chiffre-daffaires\">Analyse du Chiffre d'Affaires</h3>\n<span class=\"paragraph\"><strong>CA annuel projet\u00e9 :</strong> 100,000\u20ac\n<strong>Seuil autoris\u00e9 :</strong> 77,700\u20ac</span>\n<span class=\"paragraph\">\u26a0\ufe0f <strong>Attention</strong> : CA annuel projet\u00e9 100,000\u20ac &gt; Seuil micro-entreprise 77,700\u20ac</span>\n<span class=\"paragraph\">\ud83d\udca1 <strong>Conseil :</strong> R\u00e9duisez votre CA mensuel ou envisagez une transition vers un autre statut</span></span>"}, "type": "data"}]}, {"code_hash": "adf934c4daa27b1959288425242732ea", "console": [], "id": "Kclp", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h2 id=\"situation-personnelle\">\ud83d\udc65 Situation Personnelle</h2></span>"}, "type": "data"}]}, {"code_hash": "5b1494167d48efa512a81c8acfc052f9", "console": [], "id": "emfo", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='emfo-0' random-id='6aeaefe5-c997-fbb9-6125-692d377b2e7e'><marimo-dropdown data-initial-value='[]' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Situation familiale (parts fiscales)&lt;/span&gt;&lt;/span&gt;&quot;' data-options='[&quot;C&#92;u00e9libataire&quot;, &quot;Couple mari&#92;u00e9/pacs&#92;u00e9&quot;, &quot;Couple + 1 enfant&quot;, &quot;Couple + 2 enfants&quot;, &quot;Couple + 3 enfants&quot;, &quot;Parent isol&#92;u00e9 + 1 enfant&quot;, &quot;Parent isol&#92;u00e9 + 2 enfants&quot;]' data-allow-select-none='true' data-searchable='false' data-full-width='false'></marimo-dropdown></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "5373713040f4e703cd9c7dee3b32759c", "console": [], "id": "Hstk", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='Hstk-0' random-id='1d04859a-7439-32d8-3ea1-86d71f51778b'><marimo-slider data-initial-value='0' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Autres revenus du foyer (&#92;u20ac/an)&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0' data-stop='60000' data-step='1000' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "68aac917201fba8c9a3902b40472e3fa", "console": [], "id": "nWHF", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h2 id=\"aides-et-optimisations\">\ud83c\udf81 Aides et Optimisations</h2></span>"}, "type": "data"}]}, {"code_hash": "ed030199c5377608eef5b9361a348c18", "console": [], "id": "iLit", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='iLit-0' random-id='028a865e-8f05-4cbb-eb26-332660a34008'><marimo-checkbox data-initial-value='false' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;&#92;u00c9ligible ACRE (r&#92;u00e9duction 50% charges sociales premi&#92;u00e8re ann&#92;u00e9e)&lt;/span&gt;&lt;/span&gt;&quot;' data-disabled='false'></marimo-checkbox></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "2cfb1a507b375539df0a79e1afbd20fe", "console": [], "id": "ZHCJ", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='ZHCJ-0' random-id='6b0617ac-26a7-f5a2-552b-d069276cf092'><marimo-slider data-initial-value='25000' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Revenu fiscal de r&#92;u00e9f&#92;u00e9rence 2023 (&#92;u20ac) - pour &#92;u00e9ligibilit&#92;u00e9 VFL&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0' data-stop='50000' data-step='1000' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "35d0985bf674b78768159c7ec35bbcc6", "console": [], "id": "ROlb", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h2 id=\"charges-professionnelles\">\ud83d\udcb8 Charges Professionnelles</h2></span>"}, "type": "data"}]}, {"code_hash": "b3e9fb0aebbe5122b89e726153cefc11", "console": [], "id": "qnkX", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='qnkX-0' random-id='bf1b3c25-d991-e1f3-bdf9-490264e71a08'><marimo-slider data-initial-value='150' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Assurance RC professionnelle (&#92;u20ac/an)&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0' data-stop='500' data-step='25' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "d05347d215d7cf87153d5f7b818c3561", "console": [], "id": "TqIu", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='TqIu-0' random-id='4c019548-6661-a5eb-2ed5-eff8a2426562'><marimo-slider data-initial-value='1200' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Mutuelle sant&#92;u00e9 (&#92;u20ac/an)&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0' data-stop='3000' data-step='100' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "28186b3b0a1cff7d62abeb1e143d0a75", "console": [], "id": "Vxnm", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='Vxnm-0' random-id='95181a8f-4afe-df1d-dc37-852bcd3c3433'><marimo-slider data-initial-value='200' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Frais bancaires compte pro (&#92;u20ac/an)&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0' data-stop='400' data-step='25' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "51654bc31634df531252ed41bde66603", "console": [], "id": "DnEU", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='DnEU-0' random-id='b22542c1-a0c6-b4ec-d002-ed2045d84dd7'><marimo-slider data-initial-value='3000' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;&#92;u00c9quipement et logiciels (&#92;u20ac/an)&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0' data-stop='8000' data-step='250' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "1c3efd8c9b5fe180a3db6d3f5a563ca2", "console": [], "id": "ulZA", "outputs": [{"data": {"text/html": "<marimo-ui-element object-id='ulZA-0' random-id='021bfb26-e2d0-2eb9-7265-e7e917b1a659'><marimo-slider data-initial-value='2000' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Formation professionnelle (&#92;u20ac/an)&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0' data-stop='10000' data-step='250' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>"}, "type": "data"}]}, {"code_hash": "69164b1f921bfdf850d140eb7d01cfab", "console": [], "id": "ecfG", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "63f1ed96708a46dc913d00583db931ad", "console": [], "id": "Pvdt", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h2 id=\"calcul-des-3-regimes-fiscaux\">\ud83d\udcca Calcul des 3 R\u00e9gimes Fiscaux</h2></span>"}, "type": "data"}]}, {"code_hash": "c077f954bb7fe444df82a6bbe16bad2a", "console": [], "id": "ZBYS", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "a4d84a1c2abe96230130d9b1718ed930", "console": [], "id": "aLJB", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h2 id=\"comparaison-des-3-regimes-fiscaux\">\ud83d\udcca Comparaison des 3 R\u00e9gimes Fiscaux</h2>\n<table>\n<thead>\n<tr>\n<th>R\u00e9gime</th>\n<th>CA annuel</th>\n<th>Charges sociales</th>\n<th><strong>Imp\u00f4t Classique</strong></th>\n<th><strong>Imp\u00f4t VFL</strong></th>\n<th><strong>Imp\u00f4t Final</strong></th>\n<th>CFE</th>\n<th>Charges pro</th>\n<th><strong>Total charges</strong></th>\n<th><strong>Revenu net/mois</strong></th>\n<th>Taux global</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>R\u00e9gime Classique</strong></td>\n<td>100,000\u20ac</td>\n<td>24,816\u20ac</td>\n<td><strong>12,965\u20ac</strong></td>\n<td><strong>2,200\u20ac</strong></td>\n<td><strong>12,965\u20ac (Classique)</strong></td>\n<td>1,500\u20ac</td>\n<td>6,550\u20ac</td>\n<td><strong>45,831\u20ac</strong></td>\n<td><strong>4,514\u20ac</strong></td>\n<td>45.8%</td>\n</tr>\n<tr>\n<td><strong>Classique + ACRE</strong></td>\n<td>100,000\u20ac</td>\n<td>12,516\u20ac</td>\n<td><strong>12,965\u20ac</strong></td>\n<td><strong>2,200\u20ac</strong></td>\n<td><strong>12,965\u20ac (Classique)</strong></td>\n<td>1,500\u20ac</td>\n<td>6,550\u20ac</td>\n<td><strong>33,531\u20ac</strong></td>\n<td><strong>5,539\u20ac</strong></td>\n<td>33.5%</td>\n</tr>\n<tr>\n<td><strong>R\u00e9gime VFL</strong></td>\n<td>100,000\u20ac</td>\n<td>24,816\u20ac</td>\n<td><strong>12,965\u20ac</strong></td>\n<td><strong>2,200\u20ac</strong></td>\n<td><strong>2,200\u20ac (VFL)</strong></td>\n<td>1,500\u20ac</td>\n<td>6,550\u20ac</td>\n<td><strong>35,066\u20ac</strong></td>\n<td><strong>5,411\u20ac</strong></td>\n<td>35.1%</td>\n</tr>\n</tbody>\n</table>\n<h3 id=\"eligibilite-et-impact-des-regimes\">\ud83d\udd0d \u00c9ligibilit\u00e9 et Impact des R\u00e9gimes</h3>\n<span class=\"paragraph\"><strong>\u00c9ligibilit\u00e9 VFL :</strong> \u2705 \u00c9ligible\n<em>(RFR 2023 \u2264 28,797\u20ac pour votre situation familiale)</em></span>\n<span class=\"paragraph\"><strong>D\u00e9tail Imp\u00f4t Classique :</strong>\n- Revenu imposable : 66,000\u20ac\n- Quotient familial : 66,000\u20ac\n- Avantage quotient familial : 0\u20ac\n- <strong>Imp\u00f4t classique final : 12,965\u20ac</strong></span>\n<span class=\"paragraph\"><strong>Imp\u00f4t VFL (forfaitaire) :</strong> 2,200\u20ac <em>(2,2% du CA)</em></span>\n<span class=\"paragraph\">\ud83d\udca1 <em>Cette comparaison permet de voir l'impact s\u00e9par\u00e9 de l'ACRE et du VFL</em></span></span>"}, "type": "data"}]}, {"code_hash": "35b87667b3962719c31337cb010e2ef3", "console": [], "id": "nHfw", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "a2e32787980a6b94ed882e9016369d7e", "console": [], "id": "xXTn", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "e1b9b47d2f774faed2e9f5f8af49c2ed", "console": [], "id": "AjVT", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h2 id=\"visualisations\">\ud83d\udcca Visualisations</h2></span>"}, "type": "data"}]}, {"code_hash": "15a7c060b696698bbf444c7d89b0359b", "console": [], "id": "pHFh", "outputs": [{"data": {"text/html": "<marimo-plotly data-figure='{&quot;data&quot;: [{&quot;marker&quot;: {&quot;color&quot;: &quot;#e74c3c&quot;}, &quot;name&quot;: &quot;Charges sociales&quot;, &quot;text&quot;: [&quot;24,816&#92;u20ac&quot;, &quot;12,516&#92;u20ac&quot;, &quot;24,816&#92;u20ac&quot;], &quot;textposition&quot;: &quot;inside&quot;, &quot;x&quot;: [&quot;Classique&quot;, &quot;Classique + ACRE&quot;, &quot;VFL&quot;], &quot;y&quot;: [24816.0, 12516.0, 24816.0], &quot;type&quot;: &quot;bar&quot;}, {&quot;marker&quot;: {&quot;color&quot;: &quot;#f39c12&quot;}, &quot;name&quot;: &quot;Imp&#92;u00f4t Classique&quot;, &quot;opacity&quot;: 0.8, &quot;text&quot;: [&quot;12,965&#92;u20ac&quot;, &quot;12,965&#92;u20ac&quot;, &quot;12,965&#92;u20ac&quot;], &quot;textposition&quot;: &quot;inside&quot;, &quot;x&quot;: [&quot;Classique&quot;, &quot;Classique + ACRE&quot;, &quot;VFL&quot;], &quot;y&quot;: [12965.48, 12965.48, 12965.48], &quot;type&quot;: &quot;bar&quot;}, {&quot;marker&quot;: {&quot;color&quot;: &quot;#e67e22&quot;}, &quot;name&quot;: &quot;Imp&#92;u00f4t VFL&quot;, &quot;opacity&quot;: 0.6, &quot;text&quot;: [&quot;2,200&#92;u20ac&quot;, &quot;2,200&#92;u20ac&quot;, &quot;2,200&#92;u20ac&quot;], &quot;textposition&quot;: &quot;inside&quot;, &quot;x&quot;: [&quot;Classique&quot;, &quot;Classique + ACRE&quot;, &quot;VFL&quot;], &quot;y&quot;: [2200.0, 2200.0, 2200.0], &quot;type&quot;: &quot;bar&quot;}, {&quot;marker&quot;: {&quot;color&quot;: &quot;#9b59b6&quot;}, &quot;name&quot;: &quot;CFE&quot;, &quot;text&quot;: [&quot;1,500&#92;u20ac&quot;, &quot;1,500&#92;u20ac&quot;, &quot;1,500&#92;u20ac&quot;], &quot;textposition&quot;: &quot;inside&quot;, &quot;x&quot;: [&quot;Classique&quot;, &quot;Classique + ACRE&quot;, &quot;VFL&quot;], &quot;y&quot;: [1500, 1500, 1500], &quot;type&quot;: &quot;bar&quot;}, {&quot;marker&quot;: {&quot;color&quot;: &quot;#3498db&quot;}, &quot;name&quot;: &quot;Charges professionnelles&quot;, &quot;text&quot;: [&quot;6,550&#92;u20ac&quot;, &quot;6,550&#92;u20ac&quot;, &quot;6,550&#92;u20ac&quot;], &quot;textposition&quot;: &quot;inside&quot;, &quot;x&quot;: [&quot;Classique&quot;, &quot;Classique + ACRE&quot;, &quot;VFL&quot;], &quot;y&quot;: [6550, 6550, 6550], &quot;type&quot;: &quot;bar&quot;}], &quot;layout&quot;: {&quot;template&quot;: {&quot;data&quot;: {&quot;histogram2dcontour&quot;: [{&quot;type&quot;: &quot;histogram2dcontour&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;choropleth&quot;: [{&quot;type&quot;: &quot;choropleth&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;histogram2d&quot;: [{&quot;type&quot;: &quot;histogram2d&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;heatmap&quot;: [{&quot;type&quot;: &quot;heatmap&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;contourcarpet&quot;: [{&quot;type&quot;: &quot;contourcarpet&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;contour&quot;: [{&quot;type&quot;: &quot;contour&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;surface&quot;: [{&quot;type&quot;: &quot;surface&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;mesh3d&quot;: [{&quot;type&quot;: &quot;mesh3d&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;scatter&quot;: [{&quot;fillpattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}, &quot;type&quot;: &quot;scatter&quot;}], &quot;parcoords&quot;: [{&quot;type&quot;: &quot;parcoords&quot;, &quot;line&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterpolargl&quot;: [{&quot;type&quot;: &quot;scatterpolargl&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;bar&quot;: [{&quot;error_x&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;error_y&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;marker&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#E5ECF6&quot;, &quot;width&quot;: 0.5}, &quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;bar&quot;}], &quot;scattergeo&quot;: [{&quot;type&quot;: &quot;scattergeo&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterpolar&quot;: [{&quot;type&quot;: &quot;scatterpolar&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;histogram&quot;: [{&quot;marker&quot;: {&quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;histogram&quot;}], &quot;scattergl&quot;: [{&quot;type&quot;: &quot;scattergl&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatter3d&quot;: [{&quot;type&quot;: &quot;scatter3d&quot;, &quot;line&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattermap&quot;: [{&quot;type&quot;: &quot;scattermap&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattermapbox&quot;: [{&quot;type&quot;: &quot;scattermapbox&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterternary&quot;: [{&quot;type&quot;: &quot;scatterternary&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattercarpet&quot;: [{&quot;type&quot;: &quot;scattercarpet&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;carpet&quot;: [{&quot;aaxis&quot;: {&quot;endlinecolor&quot;: &quot;#2a3f5f&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;minorgridcolor&quot;: &quot;white&quot;, &quot;startlinecolor&quot;: &quot;#2a3f5f&quot;}, &quot;baxis&quot;: {&quot;endlinecolor&quot;: &quot;#2a3f5f&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;minorgridcolor&quot;: &quot;white&quot;, &quot;startlinecolor&quot;: &quot;#2a3f5f&quot;}, &quot;type&quot;: &quot;carpet&quot;}], &quot;table&quot;: [{&quot;cells&quot;: {&quot;fill&quot;: {&quot;color&quot;: &quot;#EBF0F8&quot;}, &quot;line&quot;: {&quot;color&quot;: &quot;white&quot;}}, &quot;header&quot;: {&quot;fill&quot;: {&quot;color&quot;: &quot;#C8D4E3&quot;}, &quot;line&quot;: {&quot;color&quot;: &quot;white&quot;}}, &quot;type&quot;: &quot;table&quot;}], &quot;barpolar&quot;: [{&quot;marker&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#E5ECF6&quot;, &quot;width&quot;: 0.5}, &quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;barpolar&quot;}], &quot;pie&quot;: [{&quot;automargin&quot;: true, &quot;type&quot;: &quot;pie&quot;}]}, &quot;layout&quot;: {&quot;autotypenumbers&quot;: &quot;strict&quot;, &quot;colorway&quot;: [&quot;#636efa&quot;, &quot;#EF553B&quot;, &quot;#00cc96&quot;, &quot;#ab63fa&quot;, &quot;#FFA15A&quot;, &quot;#19d3f3&quot;, &quot;#FF6692&quot;, &quot;#B6E880&quot;, &quot;#FF97FF&quot;, &quot;#FECB52&quot;], &quot;font&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;hovermode&quot;: &quot;closest&quot;, &quot;hoverlabel&quot;: {&quot;align&quot;: &quot;left&quot;}, &quot;paper_bgcolor&quot;: &quot;white&quot;, &quot;plot_bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;polar&quot;: {&quot;bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;angularaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;radialaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}}, &quot;ternary&quot;: {&quot;bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;aaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;baxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;caxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}}, &quot;coloraxis&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}, &quot;colorscale&quot;: {&quot;sequential&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]], &quot;sequentialminus&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]], &quot;diverging&quot;: [[0, &quot;#8e0152&quot;], [0.1, &quot;#c51b7d&quot;], [0.2, &quot;#de77ae&quot;], [0.3, &quot;#f1b6da&quot;], [0.4, &quot;#fde0ef&quot;], [0.5, &quot;#f7f7f7&quot;], [0.6, &quot;#e6f5d0&quot;], [0.7, &quot;#b8e186&quot;], [0.8, &quot;#7fbc41&quot;], [0.9, &quot;#4d9221&quot;], [1, &quot;#276419&quot;]]}, &quot;xaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;, &quot;title&quot;: {&quot;standoff&quot;: 15}, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;automargin&quot;: true, &quot;zerolinewidth&quot;: 2}, &quot;yaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;, &quot;title&quot;: {&quot;standoff&quot;: 15}, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;automargin&quot;: true, &quot;zerolinewidth&quot;: 2}, &quot;scene&quot;: {&quot;xaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}, &quot;yaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}, &quot;zaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}}, &quot;shapedefaults&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}}, &quot;annotationdefaults&quot;: {&quot;arrowcolor&quot;: &quot;#2a3f5f&quot;, &quot;arrowhead&quot;: 0, &quot;arrowwidth&quot;: 1}, &quot;geo&quot;: {&quot;bgcolor&quot;: &quot;white&quot;, &quot;landcolor&quot;: &quot;#E5ECF6&quot;, &quot;subunitcolor&quot;: &quot;white&quot;, &quot;showland&quot;: true, &quot;showlakes&quot;: true, &quot;lakecolor&quot;: &quot;white&quot;}, &quot;title&quot;: {&quot;x&quot;: 0.05}, &quot;mapbox&quot;: {&quot;style&quot;: &quot;light&quot;}}}, &quot;legend&quot;: {&quot;orientation&quot;: &quot;h&quot;, &quot;yanchor&quot;: &quot;bottom&quot;, &quot;y&quot;: 1.02, &quot;xanchor&quot;: &quot;right&quot;, &quot;x&quot;: 1}, &quot;title&quot;: {&quot;text&quot;: &quot;R&#92;u00e9partition des Charges par R&#92;u00e9gime Fiscal&lt;br&gt;&lt;sub&gt;Comparaison claire de l&#x27;impact ACRE vs VFL&lt;/sub&gt;&quot;}, &quot;xaxis&quot;: {&quot;title&quot;: {&quot;text&quot;: &quot;R&#92;u00e9gimes fiscaux&quot;}}, &quot;yaxis&quot;: {&quot;title&quot;: {&quot;text&quot;: &quot;Charges (&#92;u20ac)&quot;}}, &quot;barmode&quot;: &quot;group&quot;, &quot;height&quot;: 500, &quot;dragmode&quot;: &quot;zoom&quot;}}' data-config='{}'></marimo-plotly>"}, "type": "data"}]}, {"code_hash": "6b6cec2dfd7e02513c5302afe6c4a465", "console": [], "id": "NCOB", "outputs": [{"data": {"text/html": "<marimo-plotly data-figure='{&quot;data&quot;: [{&quot;marker&quot;: {&quot;color&quot;: [&quot;#3498db&quot;, &quot;#2ecc71&quot;, &quot;#f1c40f&quot;]}, &quot;name&quot;: &quot;Revenu Net Mensuel&quot;, &quot;text&quot;: [&quot;4,514&#92;u20ac&quot;, &quot;5,539&#92;u20ac&quot;, &quot;5,411&#92;u20ac&quot;], &quot;textposition&quot;: &quot;auto&quot;, &quot;x&quot;: [&quot;Classique&quot;, &quot;Classique + ACRE&quot;, &quot;VFL&quot;], &quot;y&quot;: [4514.043333333334, 5539.043333333334, 5411.166666666667], &quot;type&quot;: &quot;bar&quot;}], &quot;layout&quot;: {&quot;template&quot;: {&quot;data&quot;: {&quot;histogram2dcontour&quot;: [{&quot;type&quot;: &quot;histogram2dcontour&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;choropleth&quot;: [{&quot;type&quot;: &quot;choropleth&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;histogram2d&quot;: [{&quot;type&quot;: &quot;histogram2d&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;heatmap&quot;: [{&quot;type&quot;: &quot;heatmap&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;contourcarpet&quot;: [{&quot;type&quot;: &quot;contourcarpet&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;contour&quot;: [{&quot;type&quot;: &quot;contour&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;surface&quot;: [{&quot;type&quot;: &quot;surface&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;mesh3d&quot;: [{&quot;type&quot;: &quot;mesh3d&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;scatter&quot;: [{&quot;fillpattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}, &quot;type&quot;: &quot;scatter&quot;}], &quot;parcoords&quot;: [{&quot;type&quot;: &quot;parcoords&quot;, &quot;line&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterpolargl&quot;: [{&quot;type&quot;: &quot;scatterpolargl&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;bar&quot;: [{&quot;error_x&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;error_y&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;marker&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#E5ECF6&quot;, &quot;width&quot;: 0.5}, &quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;bar&quot;}], &quot;scattergeo&quot;: [{&quot;type&quot;: &quot;scattergeo&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterpolar&quot;: [{&quot;type&quot;: &quot;scatterpolar&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;histogram&quot;: [{&quot;marker&quot;: {&quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;histogram&quot;}], &quot;scattergl&quot;: [{&quot;type&quot;: &quot;scattergl&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatter3d&quot;: [{&quot;type&quot;: &quot;scatter3d&quot;, &quot;line&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattermap&quot;: [{&quot;type&quot;: &quot;scattermap&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattermapbox&quot;: [{&quot;type&quot;: &quot;scattermapbox&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterternary&quot;: [{&quot;type&quot;: &quot;scatterternary&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattercarpet&quot;: [{&quot;type&quot;: &quot;scattercarpet&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;carpet&quot;: [{&quot;aaxis&quot;: {&quot;endlinecolor&quot;: &quot;#2a3f5f&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;minorgridcolor&quot;: &quot;white&quot;, &quot;startlinecolor&quot;: &quot;#2a3f5f&quot;}, &quot;baxis&quot;: {&quot;endlinecolor&quot;: &quot;#2a3f5f&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;minorgridcolor&quot;: &quot;white&quot;, &quot;startlinecolor&quot;: &quot;#2a3f5f&quot;}, &quot;type&quot;: &quot;carpet&quot;}], &quot;table&quot;: [{&quot;cells&quot;: {&quot;fill&quot;: {&quot;color&quot;: &quot;#EBF0F8&quot;}, &quot;line&quot;: {&quot;color&quot;: &quot;white&quot;}}, &quot;header&quot;: {&quot;fill&quot;: {&quot;color&quot;: &quot;#C8D4E3&quot;}, &quot;line&quot;: {&quot;color&quot;: &quot;white&quot;}}, &quot;type&quot;: &quot;table&quot;}], &quot;barpolar&quot;: [{&quot;marker&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#E5ECF6&quot;, &quot;width&quot;: 0.5}, &quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;barpolar&quot;}], &quot;pie&quot;: [{&quot;automargin&quot;: true, &quot;type&quot;: &quot;pie&quot;}]}, &quot;layout&quot;: {&quot;autotypenumbers&quot;: &quot;strict&quot;, &quot;colorway&quot;: [&quot;#636efa&quot;, &quot;#EF553B&quot;, &quot;#00cc96&quot;, &quot;#ab63fa&quot;, &quot;#FFA15A&quot;, &quot;#19d3f3&quot;, &quot;#FF6692&quot;, &quot;#B6E880&quot;, &quot;#FF97FF&quot;, &quot;#FECB52&quot;], &quot;font&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;hovermode&quot;: &quot;closest&quot;, &quot;hoverlabel&quot;: {&quot;align&quot;: &quot;left&quot;}, &quot;paper_bgcolor&quot;: &quot;white&quot;, &quot;plot_bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;polar&quot;: {&quot;bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;angularaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;radialaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}}, &quot;ternary&quot;: {&quot;bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;aaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;baxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;caxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}}, &quot;coloraxis&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}, &quot;colorscale&quot;: {&quot;sequential&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]], &quot;sequentialminus&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]], &quot;diverging&quot;: [[0, &quot;#8e0152&quot;], [0.1, &quot;#c51b7d&quot;], [0.2, &quot;#de77ae&quot;], [0.3, &quot;#f1b6da&quot;], [0.4, &quot;#fde0ef&quot;], [0.5, &quot;#f7f7f7&quot;], [0.6, &quot;#e6f5d0&quot;], [0.7, &quot;#b8e186&quot;], [0.8, &quot;#7fbc41&quot;], [0.9, &quot;#4d9221&quot;], [1, &quot;#276419&quot;]]}, &quot;xaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;, &quot;title&quot;: {&quot;standoff&quot;: 15}, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;automargin&quot;: true, &quot;zerolinewidth&quot;: 2}, &quot;yaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;, &quot;title&quot;: {&quot;standoff&quot;: 15}, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;automargin&quot;: true, &quot;zerolinewidth&quot;: 2}, &quot;scene&quot;: {&quot;xaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}, &quot;yaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}, &quot;zaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}}, &quot;shapedefaults&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}}, &quot;annotationdefaults&quot;: {&quot;arrowcolor&quot;: &quot;#2a3f5f&quot;, &quot;arrowhead&quot;: 0, &quot;arrowwidth&quot;: 1}, &quot;geo&quot;: {&quot;bgcolor&quot;: &quot;white&quot;, &quot;landcolor&quot;: &quot;#E5ECF6&quot;, &quot;subunitcolor&quot;: &quot;white&quot;, &quot;showland&quot;: true, &quot;showlakes&quot;: true, &quot;lakecolor&quot;: &quot;white&quot;}, &quot;title&quot;: {&quot;x&quot;: 0.05}, &quot;mapbox&quot;: {&quot;style&quot;: &quot;light&quot;}}}, &quot;title&quot;: {&quot;text&quot;: &quot;Revenus Nets Mensuels par R&#92;u00e9gime Fiscal&quot;}, &quot;xaxis&quot;: {&quot;title&quot;: {&quot;text&quot;: &quot;R&#92;u00e9gimes fiscaux&quot;}}, &quot;yaxis&quot;: {&quot;title&quot;: {&quot;text&quot;: &quot;Revenu Net Mensuel (&#92;u20ac)&quot;}}, &quot;height&quot;: 400, &quot;showlegend&quot;: false, &quot;dragmode&quot;: &quot;zoom&quot;}}' data-config='{}'></marimo-plotly>"}, "type": "data"}]}], "metadata": {"marimo_version": "0.14.10"}, "version": "1"},
+            "runtimeConfig": null,
+        };
+    </script>
+  <marimo-code hidden=""></marimo-code>
+<marimo-code-hash hidden="">d47e0c129dd6b012c7aa097e06eec13c36dc3ad005aed0297fceadaa8e469620</marimo-code-hash>
+<script>
+// Security protections for the freelance simulator
+(function() {
+    'use strict';
+    
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+    document.addEventListener('keydown', function(e) {
+        // F12
+        if (e.key === 'F12') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+I (DevTools)
+        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+J (Console)
+        if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && e.key === 'u') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+C (Inspect Element)
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+S (Save)
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+A (Select All)
+        if (e.ctrlKey && e.key === 'a') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+P (Print)
+        if (e.ctrlKey && e.key === 'p') {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // Disable text selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable drag and drop
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Console warning
+    console.log('%c⚠️ ATTENTION - Code protégé', 'color: red; font-size: 20px; font-weight: bold;');
+    console.log('%cCe simulateur est protégé par des droits d\'auteur.', 'color: red; font-size: 14px;');
+    console.log('%cToute reproduction, modification ou utilisation non autorisée est interdite.', 'color: red; font-size: 14px;');
+    console.log('%c© 2025 - Simulateur Freelance. Tous droits réservés.', 'color: red; font-size: 14px;');
+    
+    // Monitor console access
+    let devtools = false;
+    setInterval(function() {
+        if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+            if (!devtools) {
+                devtools = true;
+                console.clear();
+                console.log('%c⚠️ Outils de développement détectés', 'color: red; font-size: 16px; font-weight: bold;');
+                console.log('%cL\'accès au code source est interdit.', 'color: red; font-size: 14px;');
+            }
+        }
+    }, 500);
+    
+    // Disable image saving
+    document.addEventListener('DOMContentLoaded', function() {
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+            img.draggable = false;
+        });
+    });
+    
+    // Protection against iframe embedding
+    if (window.top !== window.self) {
+        window.top.location = window.self.location;
+    }
+    
+    // Clear console periodically
+    setInterval(function() {
+        console.clear();
+        console.log('%c⚠️ Console effacée automatiquement', 'color: orange; font-size: 12px;');
+    }, 30000);
+    
+})();
+</script>
+
+
+<!-- Content from scenarios.html -->
+
+    <div id="root"></div>
+    <script data-marimo="true">
+      window.__MARIMO_MOUNT_CONFIG__ = {
+            "filename": "scenarios.py",
+            "mode": "read",
+            "version": "0.14.10",
+            "serverToken": "static",
+            "config": {"completion": {"activate_on_typing": true, "copilot": false}, "display": {"cell_output": "above", "code_editor_font_size": 14, "dataframes": "rich", "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": false, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": true}}, "package_management": {"manager": "pip"}, "runtime": {"auto_instantiate": true, "auto_reload": "off", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "after_delay", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": true},
+            "notebook": {"cells": [{"code": "", "code_hash": "48a461a7aad76fa77e37f00358af07d0", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "Hbol", "name": ""}, {"code": "", "code_hash": "eb0b31cdabb641cf0ad9dc9ae44bf859", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "MJUe", "name": ""}, {"code": "", "code_hash": "f0cf83beb9f72811dfe0dc92c7957ff3", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "vblA", "name": ""}, {"code": "", "code_hash": "51a9c4c9a3cf3fe229bd0d8177c115b0", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "bkHC", "name": ""}, {"code": "", "code_hash": "0aa7a310269c2448ed60dfa579d47042", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "lEQa", "name": ""}, {"code": "", "code_hash": "3c27f7e178d3620dbb6ff1c7229fc2cf", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "PKri", "name": ""}, {"code": "", "code_hash": "5d7c351e9e03ef4abc4b2748d69aa38b", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "Xref", "name": ""}], "metadata": {"marimo_version": "0.14.10"}, "version": "1"},
+            "session": {"cells": [{"code_hash": "48a461a7aad76fa77e37f00358af07d0", "console": [], "id": "Hbol", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "eb0b31cdabb641cf0ad9dc9ae44bf859", "console": [], "id": "MJUe", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h2 id=\"calcul-des-scenarios\">\ud83d\udcca Calcul des Sc\u00e9narios</h2></span>"}, "type": "data"}]}, {"code_hash": "f0cf83beb9f72811dfe0dc92c7957ff3", "console": [], "id": "vblA", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "51a9c4c9a3cf3fe229bd0d8177c115b0", "console": [], "id": "bkHC", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "0aa7a310269c2448ed60dfa579d47042", "console": [], "id": "lEQa", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "3c27f7e178d3620dbb6ff1c7229fc2cf", "console": [], "id": "PKri", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h2 id=\"comparaison-des-3-scenarios\">\ud83d\udcca Comparaison des 3 Sc\u00e9narios</h2>\n<table>\n<thead>\n<tr>\n<th>Sc\u00e9nario</th>\n<th>CA annuel</th>\n<th>Charges sociales</th>\n<th>Imp\u00f4t (VFL)</th>\n<th>CFE</th>\n<th>Charges pro</th>\n<th><strong>Total charges</strong></th>\n<th><strong>Revenu net/mois</strong></th>\n<th>Taux global</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>Actuel</strong></td>\n<td>96,000\u20ac</td>\n<td>23,823\u20ac</td>\n<td>2,112\u20ac</td>\n<td>800\u20ac</td>\n<td>6,550\u20ac</td>\n<td><strong>33,285\u20ac</strong></td>\n<td><strong>5,226\u20ac</strong></td>\n<td>34.7%</td>\n</tr>\n<tr>\n<td><strong>+ ACRE</strong></td>\n<td>96,000\u20ac</td>\n<td>12,015\u20ac</td>\n<td>2,112\u20ac</td>\n<td>800\u20ac</td>\n<td>6,550\u20ac</td>\n<td><strong>21,477\u20ac</strong></td>\n<td><strong>6,210\u20ac</strong></td>\n<td>22.4%</td>\n</tr>\n<tr>\n<td><strong>Optimis\u00e9</strong></td>\n<td>76,146\u20ac</td>\n<td>18,896\u20ac</td>\n<td>1,675\u20ac</td>\n<td>800\u20ac</td>\n<td>6,550\u20ac</td>\n<td><strong>27,922\u20ac</strong></td>\n<td><strong>4,019\u20ac</strong></td>\n<td>36.7%</td>\n</tr>\n</tbody>\n</table></span>"}, "type": "data"}]}, {"code_hash": "5d7c351e9e03ef4abc4b2748d69aa38b", "console": [], "id": "Xref", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}], "metadata": {"marimo_version": "0.14.10"}, "version": "1"},
+            "runtimeConfig": null,
+        };
+    </script>
+  <marimo-code hidden=""></marimo-code>
+<marimo-code-hash hidden="">00e536ad1c222ce6476c3f158a07a79ecfda54aeb4c78c93e883e1aefec3bd0d</marimo-code-hash>
+<script>
+// Security protections for the freelance simulator
+(function() {
+    'use strict';
+    
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+    document.addEventListener('keydown', function(e) {
+        // F12
+        if (e.key === 'F12') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+I (DevTools)
+        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+J (Console)
+        if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && e.key === 'u') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+C (Inspect Element)
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+S (Save)
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+A (Select All)
+        if (e.ctrlKey && e.key === 'a') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+P (Print)
+        if (e.ctrlKey && e.key === 'p') {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // Disable text selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable drag and drop
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Console warning
+    console.log('%c⚠️ ATTENTION - Code protégé', 'color: red; font-size: 20px; font-weight: bold;');
+    console.log('%cCe simulateur est protégé par des droits d\'auteur.', 'color: red; font-size: 14px;');
+    console.log('%cToute reproduction, modification ou utilisation non autorisée est interdite.', 'color: red; font-size: 14px;');
+    console.log('%c© 2025 - Simulateur Freelance. Tous droits réservés.', 'color: red; font-size: 14px;');
+    
+    // Monitor console access
+    let devtools = false;
+    setInterval(function() {
+        if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+            if (!devtools) {
+                devtools = true;
+                console.clear();
+                console.log('%c⚠️ Outils de développement détectés', 'color: red; font-size: 16px; font-weight: bold;');
+                console.log('%cL\'accès au code source est interdit.', 'color: red; font-size: 14px;');
+            }
+        }
+    }, 500);
+    
+    // Disable image saving
+    document.addEventListener('DOMContentLoaded', function() {
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+            img.draggable = false;
+        });
+    });
+    
+    // Protection against iframe embedding
+    if (window.top !== window.self) {
+        window.top.location = window.self.location;
+    }
+    
+    // Clear console periodically
+    setInterval(function() {
+        console.clear();
+        console.log('%c⚠️ Console effacée automatiquement', 'color: orange; font-size: 12px;');
+    }, 30000);
+    
+})();
+</script>
+
+
+<!-- Content from visualizations.html -->
+
+    <div id="root"></div>
+    <script data-marimo="true">
+      window.__MARIMO_MOUNT_CONFIG__ = {
+            "filename": "visualizations.py",
+            "mode": "read",
+            "version": "0.14.10",
+            "serverToken": "static",
+            "config": {"completion": {"activate_on_typing": true, "copilot": false}, "display": {"cell_output": "above", "code_editor_font_size": 14, "dataframes": "rich", "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": false, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": true}}, "package_management": {"manager": "pip"}, "runtime": {"auto_instantiate": true, "auto_reload": "off", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "after_delay", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": true},
+            "notebook": {"cells": [{"code": "", "code_hash": "ec693cd04b6656afcfeffa998b7aec94", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "Hbol", "name": ""}, {"code": "", "code_hash": "0e92a2a373e920433f191c090fef26ce", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "MJUe", "name": ""}, {"code": "", "code_hash": "1ec64b9698f8d5ed73071ad1109b71b8", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "vblA", "name": ""}, {"code": "", "code_hash": "0543e48dd75e9dce82014dac32de2ac7", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "bkHC", "name": ""}, {"code": "", "code_hash": "0ac9576734abb18616e7cad7e689a9bf", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "lEQa", "name": ""}, {"code": "", "code_hash": "e67ec37f28fe59fc1bb6020ddb48ee7f", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "PKri", "name": ""}, {"code": "", "code_hash": "b31c6cc6ca7242ad74353a4ac4f0f9f3", "config": {"column": null, "disabled": false, "hide_code": false}, "id": "Xref", "name": ""}], "metadata": {"marimo_version": "0.14.10"}, "version": "1"},
+            "session": {"cells": [{"code_hash": "ec693cd04b6656afcfeffa998b7aec94", "console": [], "id": "Hbol", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "0e92a2a373e920433f191c090fef26ce", "console": [], "id": "MJUe", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><h2 id=\"visualisations-et-graphiques\">\ud83d\udcca Visualisations et Graphiques</h2></span>"}, "type": "data"}]}, {"code_hash": "1ec64b9698f8d5ed73071ad1109b71b8", "console": [], "id": "vblA", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "0543e48dd75e9dce82014dac32de2ac7", "console": [], "id": "bkHC", "outputs": [{"data": {"text/html": "<marimo-plotly data-figure='{&quot;data&quot;: [{&quot;marker&quot;: {&quot;color&quot;: &quot;#e74c3c&quot;}, &quot;name&quot;: &quot;Charges sociales&quot;, &quot;text&quot;: [&quot;23,616&#92;u20ac&quot;, &quot;11,808&#92;u20ac&quot;, &quot;18,780&#92;u20ac&quot;], &quot;textposition&quot;: &quot;inside&quot;, &quot;x&quot;: [&quot;Actuel&quot;, &quot;ACRE&quot;, &quot;Optimis&#92;u00e9&quot;], &quot;y&quot;: [23616, 11808, 18780], &quot;type&quot;: &quot;bar&quot;}, {&quot;marker&quot;: {&quot;color&quot;: &quot;#f39c12&quot;}, &quot;name&quot;: &quot;Imp&#92;u00f4t sur le revenu&quot;, &quot;text&quot;: [&quot;8,500&#92;u20ac&quot;, &quot;8,500&#92;u20ac&quot;, &quot;6,200&#92;u20ac&quot;], &quot;textposition&quot;: &quot;inside&quot;, &quot;x&quot;: [&quot;Actuel&quot;, &quot;ACRE&quot;, &quot;Optimis&#92;u00e9&quot;], &quot;y&quot;: [8500, 8500, 6200], &quot;type&quot;: &quot;bar&quot;}, {&quot;marker&quot;: {&quot;color&quot;: &quot;#9b59b6&quot;}, &quot;name&quot;: &quot;CFE&quot;, &quot;text&quot;: [&quot;800&#92;u20ac&quot;, &quot;800&#92;u20ac&quot;, &quot;800&#92;u20ac&quot;], &quot;textposition&quot;: &quot;inside&quot;, &quot;x&quot;: [&quot;Actuel&quot;, &quot;ACRE&quot;, &quot;Optimis&#92;u00e9&quot;], &quot;y&quot;: [800, 800, 800], &quot;type&quot;: &quot;bar&quot;}, {&quot;marker&quot;: {&quot;color&quot;: &quot;#3498db&quot;}, &quot;name&quot;: &quot;Charges professionnelles&quot;, &quot;text&quot;: [&quot;6,550&#92;u20ac&quot;, &quot;6,550&#92;u20ac&quot;, &quot;6,550&#92;u20ac&quot;], &quot;textposition&quot;: &quot;inside&quot;, &quot;x&quot;: [&quot;Actuel&quot;, &quot;ACRE&quot;, &quot;Optimis&#92;u00e9&quot;], &quot;y&quot;: [6550, 6550, 6550], &quot;type&quot;: &quot;bar&quot;}], &quot;layout&quot;: {&quot;template&quot;: {&quot;data&quot;: {&quot;histogram2dcontour&quot;: [{&quot;type&quot;: &quot;histogram2dcontour&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;choropleth&quot;: [{&quot;type&quot;: &quot;choropleth&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;histogram2d&quot;: [{&quot;type&quot;: &quot;histogram2d&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;heatmap&quot;: [{&quot;type&quot;: &quot;heatmap&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;contourcarpet&quot;: [{&quot;type&quot;: &quot;contourcarpet&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;contour&quot;: [{&quot;type&quot;: &quot;contour&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;surface&quot;: [{&quot;type&quot;: &quot;surface&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;mesh3d&quot;: [{&quot;type&quot;: &quot;mesh3d&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;scatter&quot;: [{&quot;fillpattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}, &quot;type&quot;: &quot;scatter&quot;}], &quot;parcoords&quot;: [{&quot;type&quot;: &quot;parcoords&quot;, &quot;line&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterpolargl&quot;: [{&quot;type&quot;: &quot;scatterpolargl&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;bar&quot;: [{&quot;error_x&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;error_y&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;marker&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#E5ECF6&quot;, &quot;width&quot;: 0.5}, &quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;bar&quot;}], &quot;scattergeo&quot;: [{&quot;type&quot;: &quot;scattergeo&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterpolar&quot;: [{&quot;type&quot;: &quot;scatterpolar&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;histogram&quot;: [{&quot;marker&quot;: {&quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;histogram&quot;}], &quot;scattergl&quot;: [{&quot;type&quot;: &quot;scattergl&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatter3d&quot;: [{&quot;type&quot;: &quot;scatter3d&quot;, &quot;line&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattermap&quot;: [{&quot;type&quot;: &quot;scattermap&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattermapbox&quot;: [{&quot;type&quot;: &quot;scattermapbox&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterternary&quot;: [{&quot;type&quot;: &quot;scatterternary&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattercarpet&quot;: [{&quot;type&quot;: &quot;scattercarpet&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;carpet&quot;: [{&quot;aaxis&quot;: {&quot;endlinecolor&quot;: &quot;#2a3f5f&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;minorgridcolor&quot;: &quot;white&quot;, &quot;startlinecolor&quot;: &quot;#2a3f5f&quot;}, &quot;baxis&quot;: {&quot;endlinecolor&quot;: &quot;#2a3f5f&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;minorgridcolor&quot;: &quot;white&quot;, &quot;startlinecolor&quot;: &quot;#2a3f5f&quot;}, &quot;type&quot;: &quot;carpet&quot;}], &quot;table&quot;: [{&quot;cells&quot;: {&quot;fill&quot;: {&quot;color&quot;: &quot;#EBF0F8&quot;}, &quot;line&quot;: {&quot;color&quot;: &quot;white&quot;}}, &quot;header&quot;: {&quot;fill&quot;: {&quot;color&quot;: &quot;#C8D4E3&quot;}, &quot;line&quot;: {&quot;color&quot;: &quot;white&quot;}}, &quot;type&quot;: &quot;table&quot;}], &quot;barpolar&quot;: [{&quot;marker&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#E5ECF6&quot;, &quot;width&quot;: 0.5}, &quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;barpolar&quot;}], &quot;pie&quot;: [{&quot;automargin&quot;: true, &quot;type&quot;: &quot;pie&quot;}]}, &quot;layout&quot;: {&quot;autotypenumbers&quot;: &quot;strict&quot;, &quot;colorway&quot;: [&quot;#636efa&quot;, &quot;#EF553B&quot;, &quot;#00cc96&quot;, &quot;#ab63fa&quot;, &quot;#FFA15A&quot;, &quot;#19d3f3&quot;, &quot;#FF6692&quot;, &quot;#B6E880&quot;, &quot;#FF97FF&quot;, &quot;#FECB52&quot;], &quot;font&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;hovermode&quot;: &quot;closest&quot;, &quot;hoverlabel&quot;: {&quot;align&quot;: &quot;left&quot;}, &quot;paper_bgcolor&quot;: &quot;white&quot;, &quot;plot_bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;polar&quot;: {&quot;bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;angularaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;radialaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}}, &quot;ternary&quot;: {&quot;bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;aaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;baxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;caxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}}, &quot;coloraxis&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}, &quot;colorscale&quot;: {&quot;sequential&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]], &quot;sequentialminus&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]], &quot;diverging&quot;: [[0, &quot;#8e0152&quot;], [0.1, &quot;#c51b7d&quot;], [0.2, &quot;#de77ae&quot;], [0.3, &quot;#f1b6da&quot;], [0.4, &quot;#fde0ef&quot;], [0.5, &quot;#f7f7f7&quot;], [0.6, &quot;#e6f5d0&quot;], [0.7, &quot;#b8e186&quot;], [0.8, &quot;#7fbc41&quot;], [0.9, &quot;#4d9221&quot;], [1, &quot;#276419&quot;]]}, &quot;xaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;, &quot;title&quot;: {&quot;standoff&quot;: 15}, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;automargin&quot;: true, &quot;zerolinewidth&quot;: 2}, &quot;yaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;, &quot;title&quot;: {&quot;standoff&quot;: 15}, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;automargin&quot;: true, &quot;zerolinewidth&quot;: 2}, &quot;scene&quot;: {&quot;xaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}, &quot;yaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}, &quot;zaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}}, &quot;shapedefaults&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}}, &quot;annotationdefaults&quot;: {&quot;arrowcolor&quot;: &quot;#2a3f5f&quot;, &quot;arrowhead&quot;: 0, &quot;arrowwidth&quot;: 1}, &quot;geo&quot;: {&quot;bgcolor&quot;: &quot;white&quot;, &quot;landcolor&quot;: &quot;#E5ECF6&quot;, &quot;subunitcolor&quot;: &quot;white&quot;, &quot;showland&quot;: true, &quot;showlakes&quot;: true, &quot;lakecolor&quot;: &quot;white&quot;}, &quot;title&quot;: {&quot;x&quot;: 0.05}, &quot;mapbox&quot;: {&quot;style&quot;: &quot;light&quot;}}}, &quot;title&quot;: {&quot;text&quot;: &quot;R&#92;u00e9partition des Charges Annuelles par Sc&#92;u00e9nario&quot;}, &quot;xaxis&quot;: {&quot;title&quot;: {&quot;text&quot;: &quot;Sc&#92;u00e9narios&quot;}}, &quot;yaxis&quot;: {&quot;title&quot;: {&quot;text&quot;: &quot;Charges (&#92;u20ac)&quot;}}, &quot;barmode&quot;: &quot;stack&quot;, &quot;height&quot;: 500, &quot;dragmode&quot;: &quot;zoom&quot;}}' data-config='{}'></marimo-plotly>"}, "type": "data"}]}, {"code_hash": "0ac9576734abb18616e7cad7e689a9bf", "console": [], "id": "lEQa", "outputs": [{"data": {"text/html": "<marimo-plotly data-figure='{&quot;data&quot;: [{&quot;marker&quot;: {&quot;color&quot;: [&quot;#3498db&quot;, &quot;#2ecc71&quot;, &quot;#f1c40f&quot;]}, &quot;name&quot;: &quot;Revenu Net&quot;, &quot;text&quot;: [&quot;4,669&#92;u20ac&quot;, &quot;5,653&#92;u20ac&quot;, &quot;4,263&#92;u20ac&quot;], &quot;textposition&quot;: &quot;auto&quot;, &quot;x&quot;: [&quot;Actuel&quot;, &quot;ACRE&quot;, &quot;Optimis&#92;u00e9&quot;], &quot;y&quot;: [4669, 5653, 4263], &quot;type&quot;: &quot;bar&quot;, &quot;xaxis&quot;: &quot;x&quot;, &quot;yaxis&quot;: &quot;y&quot;}, {&quot;marker&quot;: {&quot;color&quot;: [&quot;#e74c3c&quot;, &quot;#27ae60&quot;, &quot;#f39c12&quot;]}, &quot;name&quot;: &quot;Taux Charges&quot;, &quot;text&quot;: [&quot;34.4%&quot;, &quot;26.2%&quot;, &quot;33.8%&quot;], &quot;textposition&quot;: &quot;auto&quot;, &quot;x&quot;: [&quot;Actuel&quot;, &quot;ACRE&quot;, &quot;Optimis&#92;u00e9&quot;], &quot;y&quot;: [34.4, 26.200000000000003, 33.800000000000004], &quot;type&quot;: &quot;bar&quot;, &quot;xaxis&quot;: &quot;x2&quot;, &quot;yaxis&quot;: &quot;y2&quot;}], &quot;layout&quot;: {&quot;template&quot;: {&quot;data&quot;: {&quot;histogram2dcontour&quot;: [{&quot;type&quot;: &quot;histogram2dcontour&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;choropleth&quot;: [{&quot;type&quot;: &quot;choropleth&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;histogram2d&quot;: [{&quot;type&quot;: &quot;histogram2d&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;heatmap&quot;: [{&quot;type&quot;: &quot;heatmap&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;contourcarpet&quot;: [{&quot;type&quot;: &quot;contourcarpet&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;contour&quot;: [{&quot;type&quot;: &quot;contour&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;surface&quot;: [{&quot;type&quot;: &quot;surface&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;mesh3d&quot;: [{&quot;type&quot;: &quot;mesh3d&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;scatter&quot;: [{&quot;fillpattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}, &quot;type&quot;: &quot;scatter&quot;}], &quot;parcoords&quot;: [{&quot;type&quot;: &quot;parcoords&quot;, &quot;line&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterpolargl&quot;: [{&quot;type&quot;: &quot;scatterpolargl&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;bar&quot;: [{&quot;error_x&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;error_y&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;marker&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#E5ECF6&quot;, &quot;width&quot;: 0.5}, &quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;bar&quot;}], &quot;scattergeo&quot;: [{&quot;type&quot;: &quot;scattergeo&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterpolar&quot;: [{&quot;type&quot;: &quot;scatterpolar&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;histogram&quot;: [{&quot;marker&quot;: {&quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;histogram&quot;}], &quot;scattergl&quot;: [{&quot;type&quot;: &quot;scattergl&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatter3d&quot;: [{&quot;type&quot;: &quot;scatter3d&quot;, &quot;line&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattermap&quot;: [{&quot;type&quot;: &quot;scattermap&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattermapbox&quot;: [{&quot;type&quot;: &quot;scattermapbox&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterternary&quot;: [{&quot;type&quot;: &quot;scatterternary&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattercarpet&quot;: [{&quot;type&quot;: &quot;scattercarpet&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;carpet&quot;: [{&quot;aaxis&quot;: {&quot;endlinecolor&quot;: &quot;#2a3f5f&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;minorgridcolor&quot;: &quot;white&quot;, &quot;startlinecolor&quot;: &quot;#2a3f5f&quot;}, &quot;baxis&quot;: {&quot;endlinecolor&quot;: &quot;#2a3f5f&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;minorgridcolor&quot;: &quot;white&quot;, &quot;startlinecolor&quot;: &quot;#2a3f5f&quot;}, &quot;type&quot;: &quot;carpet&quot;}], &quot;table&quot;: [{&quot;cells&quot;: {&quot;fill&quot;: {&quot;color&quot;: &quot;#EBF0F8&quot;}, &quot;line&quot;: {&quot;color&quot;: &quot;white&quot;}}, &quot;header&quot;: {&quot;fill&quot;: {&quot;color&quot;: &quot;#C8D4E3&quot;}, &quot;line&quot;: {&quot;color&quot;: &quot;white&quot;}}, &quot;type&quot;: &quot;table&quot;}], &quot;barpolar&quot;: [{&quot;marker&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#E5ECF6&quot;, &quot;width&quot;: 0.5}, &quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;barpolar&quot;}], &quot;pie&quot;: [{&quot;automargin&quot;: true, &quot;type&quot;: &quot;pie&quot;}]}, &quot;layout&quot;: {&quot;autotypenumbers&quot;: &quot;strict&quot;, &quot;colorway&quot;: [&quot;#636efa&quot;, &quot;#EF553B&quot;, &quot;#00cc96&quot;, &quot;#ab63fa&quot;, &quot;#FFA15A&quot;, &quot;#19d3f3&quot;, &quot;#FF6692&quot;, &quot;#B6E880&quot;, &quot;#FF97FF&quot;, &quot;#FECB52&quot;], &quot;font&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;hovermode&quot;: &quot;closest&quot;, &quot;hoverlabel&quot;: {&quot;align&quot;: &quot;left&quot;}, &quot;paper_bgcolor&quot;: &quot;white&quot;, &quot;plot_bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;polar&quot;: {&quot;bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;angularaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;radialaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}}, &quot;ternary&quot;: {&quot;bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;aaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;baxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;caxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}}, &quot;coloraxis&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}, &quot;colorscale&quot;: {&quot;sequential&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]], &quot;sequentialminus&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]], &quot;diverging&quot;: [[0, &quot;#8e0152&quot;], [0.1, &quot;#c51b7d&quot;], [0.2, &quot;#de77ae&quot;], [0.3, &quot;#f1b6da&quot;], [0.4, &quot;#fde0ef&quot;], [0.5, &quot;#f7f7f7&quot;], [0.6, &quot;#e6f5d0&quot;], [0.7, &quot;#b8e186&quot;], [0.8, &quot;#7fbc41&quot;], [0.9, &quot;#4d9221&quot;], [1, &quot;#276419&quot;]]}, &quot;xaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;, &quot;title&quot;: {&quot;standoff&quot;: 15}, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;automargin&quot;: true, &quot;zerolinewidth&quot;: 2}, &quot;yaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;, &quot;title&quot;: {&quot;standoff&quot;: 15}, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;automargin&quot;: true, &quot;zerolinewidth&quot;: 2}, &quot;scene&quot;: {&quot;xaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}, &quot;yaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}, &quot;zaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}}, &quot;shapedefaults&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}}, &quot;annotationdefaults&quot;: {&quot;arrowcolor&quot;: &quot;#2a3f5f&quot;, &quot;arrowhead&quot;: 0, &quot;arrowwidth&quot;: 1}, &quot;geo&quot;: {&quot;bgcolor&quot;: &quot;white&quot;, &quot;landcolor&quot;: &quot;#E5ECF6&quot;, &quot;subunitcolor&quot;: &quot;white&quot;, &quot;showland&quot;: true, &quot;showlakes&quot;: true, &quot;lakecolor&quot;: &quot;white&quot;}, &quot;title&quot;: {&quot;x&quot;: 0.05}, &quot;mapbox&quot;: {&quot;style&quot;: &quot;light&quot;}}}, &quot;xaxis&quot;: {&quot;anchor&quot;: &quot;y&quot;, &quot;domain&quot;: [0.0, 0.45]}, &quot;yaxis&quot;: {&quot;anchor&quot;: &quot;x&quot;, &quot;domain&quot;: [0.0, 1.0], &quot;title&quot;: {&quot;text&quot;: &quot;Revenu Net (&#92;u20ac)&quot;}}, &quot;xaxis2&quot;: {&quot;anchor&quot;: &quot;y2&quot;, &quot;domain&quot;: [0.55, 1.0]}, &quot;yaxis2&quot;: {&quot;anchor&quot;: &quot;x2&quot;, &quot;domain&quot;: [0.0, 1.0], &quot;title&quot;: {&quot;text&quot;: &quot;Taux de charges (%)&quot;}}, &quot;annotations&quot;: [{&quot;font&quot;: {&quot;size&quot;: 16}, &quot;showarrow&quot;: false, &quot;text&quot;: &quot;Revenus Nets Mensuels&quot;, &quot;x&quot;: 0.225, &quot;xanchor&quot;: &quot;center&quot;, &quot;xref&quot;: &quot;paper&quot;, &quot;y&quot;: 1.0, &quot;yanchor&quot;: &quot;bottom&quot;, &quot;yref&quot;: &quot;paper&quot;}, {&quot;font&quot;: {&quot;size&quot;: 16}, &quot;showarrow&quot;: false, &quot;text&quot;: &quot;Taux Global de Charges&quot;, &quot;x&quot;: 0.775, &quot;xanchor&quot;: &quot;center&quot;, &quot;xref&quot;: &quot;paper&quot;, &quot;y&quot;: 1.0, &quot;yanchor&quot;: &quot;bottom&quot;, &quot;yref&quot;: &quot;paper&quot;}], &quot;height&quot;: 400, &quot;showlegend&quot;: false, &quot;dragmode&quot;: &quot;zoom&quot;}}' data-config='{}'></marimo-plotly>"}, "type": "data"}]}, {"code_hash": "e67ec37f28fe59fc1bb6020ddb48ee7f", "console": [], "id": "PKri", "outputs": [{"data": {"text/html": "<marimo-plotly data-figure='{&quot;data&quot;: [{&quot;hovertemplate&quot;: &quot;CA: %{x:,.0f}&#92;u20ac&lt;br&gt;Net: %{y:,.0f}&#92;u20ac&lt;extra&gt;&lt;/extra&gt;&quot;, &quot;line&quot;: {&quot;color&quot;: &quot;#3498db&quot;, &quot;width&quot;: 3}, &quot;mode&quot;: &quot;lines+markers&quot;, &quot;name&quot;: &quot;R&#92;u00e9gime Classique&quot;, &quot;x&quot;: [2000.0, 2500.0, 3000.0, 3500.0, 4000.0, 4500.0, 5000.0, 5500.0, 6000.0, 6500.0, 7000.0, 7500.0, 8000.0, 8500.0, 9000.0, 9500.0, 10000.0, 10500.0, 11000.0, 11500.0], &quot;y&quot;: [1463.8691666666666, 1803.4891666666665, 2143.1091666666666, 2482.7291666666665, 2784.903333333333, 3061.8233333333333, 3338.7433333333333, 3615.663333333334, 3892.5833333333335, 4169.503333333334, 4446.423333333333, 4723.343333333334, 5000.263333333333, 5277.183333333333, 5554.1033333333335, 5831.0233333333335, 6107.943333333334, 6384.863333333334, 6631.560833333334, 6872.180833333333], &quot;type&quot;: &quot;scatter&quot;}, {&quot;hovertemplate&quot;: &quot;CA: %{x:,.0f}&#92;u20ac&lt;br&gt;Net: %{y:,.0f}&#92;u20ac&lt;extra&gt;&lt;/extra&gt;&quot;, &quot;line&quot;: {&quot;color&quot;: &quot;#e74c3c&quot;, &quot;width&quot;: 3}, &quot;mode&quot;: &quot;lines+markers&quot;, &quot;name&quot;: &quot;VFL&quot;, &quot;x&quot;: [2000.0, 2500.0, 3000.0, 3500.0, 4000.0, 4500.0, 5000.0, 5500.0, 6000.0, 6500.0, 7000.0, 7500.0, 8000.0, 8500.0, 9000.0, 9500.0, 10000.0, 10500.0, 11000.0, 11500.0], &quot;y&quot;: [1459.68, 1824.6000000000001, 2189.52, 2554.44, 2919.36, 3284.28, 3649.2000000000003, 4014.1200000000003, 4379.04, 4743.96, 5108.88, 5473.8, 5838.72, 6203.639999999999, 6568.56, 6933.48, 7298.400000000001, 7663.32, 8028.240000000001, 8393.16], &quot;type&quot;: &quot;scatter&quot;}, {&quot;hovertemplate&quot;: &quot;Votre CA: %{x:,.0f}&#92;u20ac&lt;br&gt;Votre Net: %{y:,.0f}&#92;u20ac&lt;extra&gt;&lt;/extra&gt;&quot;, &quot;marker&quot;: {&quot;color&quot;: &quot;#f1c40f&quot;, &quot;size&quot;: 12, &quot;symbol&quot;: &quot;star&quot;}, &quot;mode&quot;: &quot;markers&quot;, &quot;name&quot;: &quot;Votre situation&quot;, &quot;x&quot;: [8000], &quot;y&quot;: [4669], &quot;type&quot;: &quot;scatter&quot;}], &quot;layout&quot;: {&quot;template&quot;: {&quot;data&quot;: {&quot;histogram2dcontour&quot;: [{&quot;type&quot;: &quot;histogram2dcontour&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;choropleth&quot;: [{&quot;type&quot;: &quot;choropleth&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;histogram2d&quot;: [{&quot;type&quot;: &quot;histogram2d&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;heatmap&quot;: [{&quot;type&quot;: &quot;heatmap&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;contourcarpet&quot;: [{&quot;type&quot;: &quot;contourcarpet&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;contour&quot;: [{&quot;type&quot;: &quot;contour&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;surface&quot;: [{&quot;type&quot;: &quot;surface&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}, &quot;colorscale&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]]}], &quot;mesh3d&quot;: [{&quot;type&quot;: &quot;mesh3d&quot;, &quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}], &quot;scatter&quot;: [{&quot;fillpattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}, &quot;type&quot;: &quot;scatter&quot;}], &quot;parcoords&quot;: [{&quot;type&quot;: &quot;parcoords&quot;, &quot;line&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterpolargl&quot;: [{&quot;type&quot;: &quot;scatterpolargl&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;bar&quot;: [{&quot;error_x&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;error_y&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;marker&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#E5ECF6&quot;, &quot;width&quot;: 0.5}, &quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;bar&quot;}], &quot;scattergeo&quot;: [{&quot;type&quot;: &quot;scattergeo&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterpolar&quot;: [{&quot;type&quot;: &quot;scatterpolar&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;histogram&quot;: [{&quot;marker&quot;: {&quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;histogram&quot;}], &quot;scattergl&quot;: [{&quot;type&quot;: &quot;scattergl&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatter3d&quot;: [{&quot;type&quot;: &quot;scatter3d&quot;, &quot;line&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattermap&quot;: [{&quot;type&quot;: &quot;scattermap&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattermapbox&quot;: [{&quot;type&quot;: &quot;scattermapbox&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scatterternary&quot;: [{&quot;type&quot;: &quot;scatterternary&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;scattercarpet&quot;: [{&quot;type&quot;: &quot;scattercarpet&quot;, &quot;marker&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}}], &quot;carpet&quot;: [{&quot;aaxis&quot;: {&quot;endlinecolor&quot;: &quot;#2a3f5f&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;minorgridcolor&quot;: &quot;white&quot;, &quot;startlinecolor&quot;: &quot;#2a3f5f&quot;}, &quot;baxis&quot;: {&quot;endlinecolor&quot;: &quot;#2a3f5f&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;minorgridcolor&quot;: &quot;white&quot;, &quot;startlinecolor&quot;: &quot;#2a3f5f&quot;}, &quot;type&quot;: &quot;carpet&quot;}], &quot;table&quot;: [{&quot;cells&quot;: {&quot;fill&quot;: {&quot;color&quot;: &quot;#EBF0F8&quot;}, &quot;line&quot;: {&quot;color&quot;: &quot;white&quot;}}, &quot;header&quot;: {&quot;fill&quot;: {&quot;color&quot;: &quot;#C8D4E3&quot;}, &quot;line&quot;: {&quot;color&quot;: &quot;white&quot;}}, &quot;type&quot;: &quot;table&quot;}], &quot;barpolar&quot;: [{&quot;marker&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#E5ECF6&quot;, &quot;width&quot;: 0.5}, &quot;pattern&quot;: {&quot;fillmode&quot;: &quot;overlay&quot;, &quot;size&quot;: 10, &quot;solidity&quot;: 0.2}}, &quot;type&quot;: &quot;barpolar&quot;}], &quot;pie&quot;: [{&quot;automargin&quot;: true, &quot;type&quot;: &quot;pie&quot;}]}, &quot;layout&quot;: {&quot;autotypenumbers&quot;: &quot;strict&quot;, &quot;colorway&quot;: [&quot;#636efa&quot;, &quot;#EF553B&quot;, &quot;#00cc96&quot;, &quot;#ab63fa&quot;, &quot;#FFA15A&quot;, &quot;#19d3f3&quot;, &quot;#FF6692&quot;, &quot;#B6E880&quot;, &quot;#FF97FF&quot;, &quot;#FECB52&quot;], &quot;font&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}, &quot;hovermode&quot;: &quot;closest&quot;, &quot;hoverlabel&quot;: {&quot;align&quot;: &quot;left&quot;}, &quot;paper_bgcolor&quot;: &quot;white&quot;, &quot;plot_bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;polar&quot;: {&quot;bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;angularaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;radialaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}}, &quot;ternary&quot;: {&quot;bgcolor&quot;: &quot;#E5ECF6&quot;, &quot;aaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;baxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}, &quot;caxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;}}, &quot;coloraxis&quot;: {&quot;colorbar&quot;: {&quot;outlinewidth&quot;: 0, &quot;ticks&quot;: &quot;&quot;}}, &quot;colorscale&quot;: {&quot;sequential&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]], &quot;sequentialminus&quot;: [[0.0, &quot;#0d0887&quot;], [0.1111111111111111, &quot;#46039f&quot;], [0.2222222222222222, &quot;#7201a8&quot;], [0.3333333333333333, &quot;#9c179e&quot;], [0.4444444444444444, &quot;#bd3786&quot;], [0.5555555555555556, &quot;#d8576b&quot;], [0.6666666666666666, &quot;#ed7953&quot;], [0.7777777777777778, &quot;#fb9f3a&quot;], [0.8888888888888888, &quot;#fdca26&quot;], [1.0, &quot;#f0f921&quot;]], &quot;diverging&quot;: [[0, &quot;#8e0152&quot;], [0.1, &quot;#c51b7d&quot;], [0.2, &quot;#de77ae&quot;], [0.3, &quot;#f1b6da&quot;], [0.4, &quot;#fde0ef&quot;], [0.5, &quot;#f7f7f7&quot;], [0.6, &quot;#e6f5d0&quot;], [0.7, &quot;#b8e186&quot;], [0.8, &quot;#7fbc41&quot;], [0.9, &quot;#4d9221&quot;], [1, &quot;#276419&quot;]]}, &quot;xaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;, &quot;title&quot;: {&quot;standoff&quot;: 15}, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;automargin&quot;: true, &quot;zerolinewidth&quot;: 2}, &quot;yaxis&quot;: {&quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;ticks&quot;: &quot;&quot;, &quot;title&quot;: {&quot;standoff&quot;: 15}, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;automargin&quot;: true, &quot;zerolinewidth&quot;: 2}, &quot;scene&quot;: {&quot;xaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}, &quot;yaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}, &quot;zaxis&quot;: {&quot;backgroundcolor&quot;: &quot;#E5ECF6&quot;, &quot;gridcolor&quot;: &quot;white&quot;, &quot;linecolor&quot;: &quot;white&quot;, &quot;showbackground&quot;: true, &quot;ticks&quot;: &quot;&quot;, &quot;zerolinecolor&quot;: &quot;white&quot;, &quot;gridwidth&quot;: 2}}, &quot;shapedefaults&quot;: {&quot;line&quot;: {&quot;color&quot;: &quot;#2a3f5f&quot;}}, &quot;annotationdefaults&quot;: {&quot;arrowcolor&quot;: &quot;#2a3f5f&quot;, &quot;arrowhead&quot;: 0, &quot;arrowwidth&quot;: 1}, &quot;geo&quot;: {&quot;bgcolor&quot;: &quot;white&quot;, &quot;landcolor&quot;: &quot;#E5ECF6&quot;, &quot;subunitcolor&quot;: &quot;white&quot;, &quot;showland&quot;: true, &quot;showlakes&quot;: true, &quot;lakecolor&quot;: &quot;white&quot;}, &quot;title&quot;: {&quot;x&quot;: 0.05}, &quot;mapbox&quot;: {&quot;style&quot;: &quot;light&quot;}}}, &quot;title&quot;: {&quot;text&quot;: &quot;&#92;u00c9volution du Revenu Net selon le CA mensuel&quot;}, &quot;xaxis&quot;: {&quot;title&quot;: {&quot;text&quot;: &quot;Chiffre d&#x27;affaires mensuel (&#92;u20ac)&quot;}}, &quot;yaxis&quot;: {&quot;title&quot;: {&quot;text&quot;: &quot;Revenu net mensuel (&#92;u20ac)&quot;}}, &quot;height&quot;: 500, &quot;hovermode&quot;: &quot;x unified&quot;, &quot;dragmode&quot;: &quot;zoom&quot;}}' data-config='{}'></marimo-plotly>"}, "type": "data"}]}, {"code_hash": "b31c6cc6ca7242ad74353a4ac4f0f9f3", "console": [], "id": "Xref", "outputs": [{"data": {"text/html": "<span class=\"markdown prose dark:prose-invert\"><hr />\n<h2 id=\"i-guide-dutilisation-et-conseils\">\u2139\ufe0f Guide d'Utilisation et Conseils</h2>\n<h3 id=\"logique-du-simulateur\">\ud83c\udfaf Logique du Simulateur</h3>\n<ul>\n<li><strong>Multi-statuts</strong> : BIC, BNC, activit\u00e9s commerciales et lib\u00e9rales</li>\n<li><strong>3 optimisations</strong> : Comparez votre situation vs. aides disponibles</li>\n<li><strong>Calculs 2025</strong> : Int\u00e8gre toutes les \u00e9volutions tarifaires</li>\n</ul>\n<h3 id=\"types-dactivites-supportees\">\ud83d\udccb Types d'Activit\u00e9s Support\u00e9es</h3>\n<span class=\"paragraph\"><strong>\ud83c\udfea BIC Vente</strong> <em>(E-commerce, dropshipping, vente produits)</em>\n- Seuil : 188 700\u20ac/an - Charges : 12,3% - Abattement fiscal : 71%\n- Id\u00e9al pour : Commerce en ligne, vente de biens physiques</span>\n<span class=\"paragraph\"><strong>\ud83d\udd27 BIC Services</strong> <em>(Artisanat, services commerciaux)</em>\n- Seuil : 77 700\u20ac/an - Charges : 21,2% - Abattement fiscal : 50%\n- Id\u00e9al pour : Plomberie, coiffure, r\u00e9parations, consulting business</span>\n<span class=\"paragraph\"><strong>\ud83d\udcbc BNC G\u00e9n\u00e9ral</strong> <em>(Informatique, conseil, formations)</em>\n- Seuil : 77 700\u20ac/an - Charges : 24,6% (26,1% en 2026) - Abattement : 34%\n- Id\u00e9al pour : D\u00e9veloppement, data science, coaching, formations</span>\n<span class=\"paragraph\"><strong>\ud83c\udfe5 BNC CIPAV</strong> <em>(Professions sp\u00e9cialis\u00e9es)</em>\n- Seuil : 77 700\u20ac/an - Charges : 23,2% - Abattement fiscal : 34%\n- Id\u00e9al pour : Psychologues, architectes, certains consultants</span>\n<h3 id=\"aides-et-optimisations\">\ud83c\udf81 Aides et Optimisations</h3>\n<span class=\"paragraph\"><strong>ACRE (Aide aux Cr\u00e9ateurs) :</strong>\n- R\u00e9duction 50% des charges sociales pendant 3 trimestres\n- \u00c9ligible : ch\u00f4meurs, jeunes, b\u00e9n\u00e9ficiaires RSA/ASS\n- Gain typique : 1 500\u20ac \u00e0 4 000\u20ac sur l'ann\u00e9e</span>\n<span class=\"paragraph\"><strong>VFL (Versement Forfaitaire Lib\u00e9ratoire) :</strong>\n- Imp\u00f4t pay\u00e9 au fil de l'eau \u00e0 taux fixe\n- Condition : RFR \u2264 28 797\u20ac \u00d7 parts fiscales\n- Avantage : Pr\u00e9visibilit\u00e9 et souvent \u00e9conomies</span>\n<h3 id=\"conseils-par-niveau-de-ca\">\ud83d\udca1 Conseils par Niveau de CA</h3>\n<span class=\"paragraph\"><strong>\ud83d\ude80 CA 3-5K\u20ac/mois</strong> <em>(D\u00e9butant, side-business)</em>\n- Focus : ACRE si \u00e9ligible, VFL tr\u00e8s avantageux\n- Charges pros : Minimales (500-1000\u20ac/an)\n- Optimisation : Maximiser la croissance</span>\n<span class=\"paragraph\"><strong>\ud83d\udcbc CA 6-8K\u20ac/mois</strong> <em>(Freelance confirm\u00e9)</em>\n- Focus : \u00c9quilibre VFL/classique selon situation familiale\n- Charges pros : Standards (2000-3000\u20ac/an)\n- Optimisation : Surveillance des seuils, provision cong\u00e9s</span>\n<span class=\"paragraph\"><strong>\ud83c\udfe2 CA 8K\u20ac+/mois</strong> <em>(Expert, proche des seuils)</em>\n- Focus : Gestion fine du CA, pr\u00e9paration transition\n- Charges pros : Importantes (3000-8000\u20ac/an)\n- Optimisation : Anticipation d\u00e9passement, autres statuts</span>\n<h3 id=\"interpretation-des-resultats\">\ud83d\udcca Interpr\u00e9tation des R\u00e9sultats</h3>\n<span class=\"paragraph\"><strong>Taux de charges global :</strong>\n- <strong>&lt; 35%</strong> : Excellent (souvent avec VFL)\n- <strong>35-45%</strong> : Correct (situation standard)\n- <strong>45-55%</strong> : \u00c9lev\u00e9 (optimisation n\u00e9cessaire)\n- <strong>&gt; 55%</strong> : Probl\u00e9matique (revoir la strat\u00e9gie)</span>\n<span class=\"paragraph\"><strong>Indicateurs d'alerte :</strong>\n- CA &gt; 95% du seuil : Risque de d\u00e9passement\n- Charges &gt; 50% : Optimisation fiscale urgente\n- Pas d'ACRE \u00e9ligible : V\u00e9rifier les conditions</span>\n<h3 id=\"actions-concretes\">\ud83d\udee0\ufe0f Actions Concr\u00e8tes</h3>\n<span class=\"paragraph\"><strong>Imm\u00e9diat :</strong>\n- V\u00e9rifier \u00e9ligibilit\u00e9 ACRE si cr\u00e9ation r\u00e9cente\n- Calculer le RFR pour l'\u00e9ligibilit\u00e9 VFL 2025\n- Provisionner 30-40% du CA pour charges + imp\u00f4ts</span>\n<span class=\"paragraph\"><strong>Mensuel :</strong>\n- Surveiller le CA cumul\u00e9 vs. seuils\n- Ajuster la facturation si proche des limites\n- Mettre de c\u00f4t\u00e9 pour charges et cong\u00e9s</span>\n<span class=\"paragraph\"><strong>Annuel :</strong>\n- Optimiser les charges d\u00e9ductibles\n- Anticiper l'\u00e9volution des taux (BNC +1,5% en 2026)\n- \u00c9valuer transition EURL/SASU si d\u00e9passement</span>\n<hr />\n<span class=\"paragraph\"><strong>\ud83d\udca1 D\u00e9velopp\u00e9 avec Marimo</strong> - Simulation pr\u00e9cise pour tous vos projets freelance<br />\n<strong>\ud83d\udd17 Source des donn\u00e9es</strong> : URSSAF, Imp\u00f4ts.gouv.fr, guides officiels 2025</span></span>"}, "type": "data"}]}], "metadata": {"marimo_version": "0.14.10"}, "version": "1"},
+            "runtimeConfig": null,
+        };
+    </script>
+  <marimo-code hidden=""></marimo-code>
+<marimo-code-hash hidden="">1aa9167deec5c551f7eeef3c02bb0412734dc4a2bbac5830f070957e188e2794</marimo-code-hash>
+<script>
+// Security protections for the freelance simulator
+(function() {
+    'use strict';
+    
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+    document.addEventListener('keydown', function(e) {
+        // F12
+        if (e.key === 'F12') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+I (DevTools)
+        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+J (Console)
+        if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && e.key === 'u') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+C (Inspect Element)
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+S (Save)
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+A (Select All)
+        if (e.ctrlKey && e.key === 'a') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+P (Print)
+        if (e.ctrlKey && e.key === 'p') {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // Disable text selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable drag and drop
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Console warning
+    console.log('%c⚠️ ATTENTION - Code protégé', 'color: red; font-size: 20px; font-weight: bold;');
+    console.log('%cCe simulateur est protégé par des droits d\'auteur.', 'color: red; font-size: 14px;');
+    console.log('%cToute reproduction, modification ou utilisation non autorisée est interdite.', 'color: red; font-size: 14px;');
+    console.log('%c© 2025 - Simulateur Freelance. Tous droits réservés.', 'color: red; font-size: 14px;');
+    
+    // Monitor console access
+    let devtools = false;
+    setInterval(function() {
+        if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+            if (!devtools) {
+                devtools = true;
+                console.clear();
+                console.log('%c⚠️ Outils de développement détectés', 'color: red; font-size: 16px; font-weight: bold;');
+                console.log('%cL\'accès au code source est interdit.', 'color: red; font-size: 14px;');
+            }
+        }
+    }, 500);
+    
+    // Disable image saving
+    document.addEventListener('DOMContentLoaded', function() {
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+            img.draggable = false;
+        });
+    });
+    
+    // Protection against iframe embedding
+    if (window.top !== window.self) {
+        window.top.location = window.self.location;
+    }
+    
+    // Clear console periodically
+    setInterval(function() {
+        console.clear();
+        console.log('%c⚠️ Console effacée automatiquement', 'color: orange; font-size: 12px;');
+    }, 30000);
+    
+})();
+</script>
+
+
+<script>
+// Security protections for the freelance simulator
+(function() {
+    'use strict';
+    
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+    document.addEventListener('keydown', function(e) {
+        // F12
+        if (e.key === 'F12') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+I (DevTools)
+        if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+J (Console)
+        if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && e.key === 'u') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+Shift+C (Inspect Element)
+        if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+S (Save)
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+A (Select All)
+        if (e.ctrlKey && e.key === 'a') {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Ctrl+P (Print)
+        if (e.ctrlKey && e.key === 'p') {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // Disable text selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable drag and drop
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Console warning
+    console.log('%c⚠️ ATTENTION - Code protégé', 'color: red; font-size: 20px; font-weight: bold;');
+    console.log('%cCe simulateur est protégé par des droits d\'auteur.', 'color: red; font-size: 14px;');
+    console.log('%cToute reproduction, modification ou utilisation non autorisée est interdite.', 'color: red; font-size: 14px;');
+    console.log('%c© 2025 - Simulateur Freelance. Tous droits réservés.', 'color: red; font-size: 14px;');
+    
+    // Monitor console access
+    let devtools = false;
+    setInterval(function() {
+        if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
+            if (!devtools) {
+                devtools = true;
+                console.clear();
+                console.log('%c⚠️ Outils de développement détectés', 'color: red; font-size: 16px; font-weight: bold;');
+                console.log('%cL\'accès au code source est interdit.', 'color: red; font-size: 14px;');
+            }
+        }
+    }, 500);
+    
+    // Disable image saving
+    document.addEventListener('DOMContentLoaded', function() {
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+            img.draggable = false;
+        });
+    });
+    
+    // Protection against iframe embedding
+    if (window.top !== window.self) {
+        window.top.location = window.self.location;
+    }
+    
+    // Clear console periodically
+    setInterval(function() {
+        console.clear();
+        console.log('%c⚠️ Console effacée automatiquement', 'color: orange; font-size: 12px;');
+    }, 30000);
+    
+})();
+</script>
+</body>
+</html>
